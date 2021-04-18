@@ -226,6 +226,17 @@ img {
   margin-right: 0.2rem;
 }
 
+.cross-btn {
+  background-color: red;
+  color: white;
+  border-radius: 2px;
+  width: 15px;
+  height: 29px;
+  /* margin-inline-end: 75%; */
+  /* margin-left: 359px; */
+  float: right;
+}
+
 .badge {
   display: inline-block;
   font-size: 0.8rem;
