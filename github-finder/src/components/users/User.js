@@ -1,27 +1,22 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment , useEffect } from 'react';
 import Spinner from '../layout/Spinner';
+import Repos from '../repos/Repos';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
 
-class User extends Component {
-    componentDidMount() {
-        this.props.getUser(this.props.match.params.login);
-        this.props.getUserRepos(this.props.match.params.login);
+const User = ({ user, loading, getUser, getUserRepos, repos, match }) => {
 
-    }
+    useEffect(() => {
+        getUser(match.params.login);
+        getUserRepos(match.params.login);
+        // ***** We disabled the Warning of the next line because React have no solution of that so we ignore it ******** // 
+        // eslint-disable-next-line
+    }, [])
 
-    static propTypes = {
-        getUser: PropTypes.func.isRequired,
-        user: PropTypes.object.isRequired,
-        loading: PropTypes.bool.isRequired,
-    }
-
-
-    render() {
-        const { name, company, avatar_url, location, bio, blog, login, html_url, followers, following, public_repos, public_gists, hireable} = this.props.user;
-        const { loading } = this.props;
+        const { name, company, avatar_url, location, bio, blog, login, html_url, followers, following, public_repos, public_gists, hireable} = user;
 
         if (loading) return <Spinner />;
+
         return (
             <Fragment>
                 <Link to='/' className='btn btn-light'>Back to Search Results</Link>
@@ -84,9 +79,17 @@ class User extends Component {
                         Public Gists: {public_gists}
                     </div>
                 </div>
+
+                <Repos repos={repos}/>
             </Fragment>
         )
-    }
 }
 
+User.propTypes = {
+    getUser: PropTypes.func.isRequired,
+    getUserRepos: PropTypes.func.isRequired, 
+    user: PropTypes.object.isRequired,
+    repos: PropTypes.array.isRequired,
+    loading: PropTypes.bool.isRequired,
+}
 export default User

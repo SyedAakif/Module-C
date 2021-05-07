@@ -1,41 +1,36 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types'  // shortcut impt
+import React, { useState, useContext} from 'react';
+import PropTypes from 'prop-types';  // shortcut impt
+import GithubContext from "../context/github/GithubContext"
 
+const Search = ({ clearUsers,showClear,setAlert  }) => {
 
-class Search extends Component {
-    state = {
-        text: ''
-    }
+    const githubContext = useContext(GithubContext);
 
-    static propTypes = {
-        searchUsers: PropTypes.func.isRequired,
-        clearUsers: PropTypes.func.isRequired,
-        showClear: PropTypes.bool.isRequired,
-        setAlert: PropTypes.func.isRequired,
-    }
+    const [text, setText] = useState('');
 
     // ** This Method is Used to dynamically update state whenever text input changes in the Search **
-    onChange = e => this.setState({ [e.target.name]: e.target.value}) // This can be used anywhere multiple times
+    // const onChange = e => this.setState({ [e.target.name]: e.target.value}) // This can be used anywhere multiple times
+    
+    const onChange = e => setText(e.target.value);
 
     // ** This Method is Used to Submit the Search form **
-    onSubmit = e => {
+    const onSubmit = e => {
         e.preventDefault();
-        if(this.state.text===''){
-            this.props.setAlert('Please Enter a Username', 'light')
+        if(text===''){
+            setAlert('Please Enter a Username', 'light')
         }else{
-            this.props.searchUsers(this.state.text);
-            this.setState({ text: '' });
+            githubContext.searchUsers(text);
+            setText('');
         }
     }
-
-    render() {
-        const { showClear, clearUsers } = this.props
         return (
             <div>
-                <form onSubmit={this.onSubmit} className="form">
+                <form onSubmit={onSubmit} className="form">
                     <input type="text" name="text" placeholder="Search Users" 
-                    value={this.state.text}
-                    onChange={this.onChange}
+                    // value={this.state.text}
+                    value={text}
+                    // onChange={this.onChange}
+                    onChange={onChange}
                     />
                     <input type="submit" value="Search" className="btn btn-dark btn-block"></input>
                 </form>
@@ -44,7 +39,12 @@ class Search extends Component {
                 )}
             </div>
         )
-    }
+}
+
+Search.propTypes = {
+    clearUsers: PropTypes.func.isRequired,
+    showClear: PropTypes.bool.isRequired,
+    setAlert: PropTypes.func.isRequired,
 }
 
 export default Search
