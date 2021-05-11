@@ -8,7 +8,7 @@ let githubClientId;
 let githubClientSectret;
 
 if (process.env.NODE_ENV !== 'production'){
-    githubClientId = process.env.REACT_APP_GIHUB_CLIENT_ID;
+    githubClientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
     githubClientSectret = process.env.REACT_APP_GITHUB_CLIENT_SECRET;
 } else {
     githubClientId = process.env.GITHUB_CLIENT_ID;
